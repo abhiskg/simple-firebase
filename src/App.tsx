@@ -17,6 +17,7 @@ function App() {
   return (
     <div>
       <button onClick={handleSignIn}>Google SignIn</button>
+
       {!user && <div>No user</div>}
       {user && (
         <>
