@@ -1,13 +1,10 @@
-import GithubSignIn from "./components/GithubSignIn";
-import GoogleSignIn from "./components/GoogleSignIn";
-import RegisterByPass from "./components/RegisterByPass";
+import { RouterProvider } from "react-router-dom";
+import router from "./utils/router";
 
 function App() {
   return (
-    <div className="grid place-items-center h-screen">
-      {/* <GoogleSignIn /> */}
-      {/* <GithubSignIn /> */}
-      <RegisterByPass />
+    <div>
+      <RouterProvider router={router} />
     </div>
   );
 }
