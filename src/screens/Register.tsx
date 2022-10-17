@@ -5,6 +5,7 @@ import {
 } from "firebase/auth";
 import { useState, useRef, useEffect } from "react";
 import { auth } from "../firebase/firebase";
+import useFirebase from "../hook/useFirebase";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -88,6 +89,8 @@ const Register = () => {
     }
   };
 
+  const { handleGoogleLogin } = useFirebase();
+  console.log(auth.currentUser);
   return (
     <div className="custom-width mx-auto mt-10 flex justify-center ">
       <div>
@@ -142,6 +145,7 @@ const Register = () => {
             Register
           </button>
         </form>
+        <button onClick={handleGoogleLogin}>Google Login</button>
       </div>
     </div>
   );

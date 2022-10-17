@@ -83,7 +83,9 @@ const Login = () => {
             />
           </label>
           <div>{error}</div>
-          <Link to="">forgot password</Link>
+          <Link className="flex justify-end text-blue-500" to="">
+            forgot password
+          </Link>
           <button className="mt-3 w-full rounded bg-purple-600 p-2">
             Login
           </button>
