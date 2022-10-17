@@ -11,6 +11,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const nameRef = useRef<HTMLInputElement>(null!);
 
@@ -125,8 +126,19 @@ const Register = () => {
             />
           </label>
           <div>{error}</div>
-
-          <button className="mt-3 w-full rounded bg-purple-600 p-2">
+          <label>
+            <input
+              onClick={() => setIsDisabled(!isDisabled)}
+              type="checkbox"
+              name=""
+              id=""
+            />
+            <span>accept all terms & conditions</span>
+          </label>
+          <button
+            disabled={isDisabled}
+            className="mt-3 w-full rounded bg-purple-600 p-2"
+          >
             Register
           </button>
         </form>
