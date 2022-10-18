@@ -3,7 +3,8 @@ import {
   sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
+import { UserContext } from "../context/UserContext";
 import { auth } from "../firebase/firebase";
 import useFirebase from "../hook/useFirebase";
 
@@ -19,6 +20,9 @@ const Register = () => {
   useEffect(() => {
     nameRef.current.focus();
   }, []);
+
+  const context = useContext(UserContext);
+  console.log(context);
 
   const handleName = (e: React.FocusEvent<HTMLInputElement>) => {
     if (e.target.value === "") {
