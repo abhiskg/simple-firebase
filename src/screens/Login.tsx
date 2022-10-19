@@ -2,7 +2,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState, useRef, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import { auth } from "../firebase/firebase";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -47,16 +46,18 @@ const Login = () => {
       return;
     }
 
-    try {
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
+    userContext
+      ?.signIn(email, password)
+      .then(({ user }) => {
+        console.log(user);
+      })
+      .catch((error: any) => {
+        console.log(error);
+        setError(error.message);
+      });
 
-      console.log(user);
-      userContext?.setUser(user);
-      setEmail("");
-      setPassword("");
-    } catch (error: any) {
-      setError(error.message);
-    }
+    // setEmail("");
+    // setPassword("");
   };
 
   return (

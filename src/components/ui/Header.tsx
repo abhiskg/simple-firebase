@@ -1,14 +1,13 @@
-import { signOut } from "firebase/auth";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
-import { auth } from "../../firebase/firebase";
+
 const Header = () => {
   const userContext = useContext(UserContext);
+  const location = useLocation();
 
   const handleSignOut = () => {
-    signOut(auth);
-    userContext?.setUser(null);
+    userContext?.logOut().then(() => {});
   };
 
   return (
@@ -27,12 +26,17 @@ const Header = () => {
                 <Link to="/register">Register</Link>
               </li>
               <li>
-                <Link to="/login">Login</Link>
+                <Link to="/login" state={{ prev: location.pathname }}>
+                  Login
+                </Link>
               </li>
             </>
           )}
 
           {userContext?.user && <li>{userContext.user.displayName}</li>}
+          <li>
+            <Link to="/order">Order</Link>
+          </li>
         </ul>
       </nav>
     </header>

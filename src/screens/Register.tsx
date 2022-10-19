@@ -1,11 +1,6 @@
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  updateProfile,
-} from "firebase/auth";
+import { sendEmailVerification } from "firebase/auth";
 import { useState, useRef, useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import { auth } from "../firebase/firebase";
 import useFirebase from "../hook/useFirebase";
 
 const Register = () => {
@@ -21,8 +16,7 @@ const Register = () => {
     nameRef.current.focus();
   }, []);
 
-  const context = useContext(UserContext);
-  console.log(context);
+  const userContext = useContext(UserContext);
 
   const handleName = (e: React.FocusEvent<HTMLInputElement>) => {
     if (e.target.value === "") {
@@ -64,7 +58,7 @@ const Register = () => {
     setError("");
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!name && !email && !password) {
@@ -73,28 +67,35 @@ const Register = () => {
     }
     console.log(name, email, password);
 
-    try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      await updateProfile(user, {
-        displayName: name,
+    userContext
+      ?.signUp(email, password)
+      .then(({ user }) => {
+        if (user) {
+          userContext
+            .updateUser(name, user)
+            .then(() => console.log("Update successfully"))
+            .catch((error) => console.log(error));
+          sendEmailVerification(user);
+        }
+      })
+      .catch((error: any) => {
+        setError(error.message);
       });
 
-      await sendEmailVerification(user);
-      console.log(user);
-      setName("");
-      setEmail("");
-      setPassword("");
-    } catch (error: any) {
-      setError(error.message);
-    }
+    setName("");
+    setEmail("");
+    setPassword("");
   };
 
-  const { handleGoogleLogin } = useFirebase();
-  console.log(auth.currentUser);
+  const handleGoogleLogin = () => {
+    userContext
+      ?.signInWithGoogle()
+      .then(() => {})
+      .catch((error: any) => {
+        setError(error.message);
+      });
+  };
+
   return (
     <div className="custom-width mx-auto mt-10 flex justify-center ">
       <div>
