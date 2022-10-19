@@ -1,7 +1,6 @@
 import { sendEmailVerification } from "firebase/auth";
 import { useState, useRef, useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import useFirebase from "../hook/useFirebase";
 
 const Register = () => {
   const [name, setName] = useState("");

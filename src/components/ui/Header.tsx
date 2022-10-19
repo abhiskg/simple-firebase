@@ -1,10 +1,9 @@
 import { useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 
 const Header = () => {
   const userContext = useContext(UserContext);
-  const location = useLocation();
 
   const handleSignOut = () => {
     userContext?.logOut().then(() => {});
@@ -18,25 +17,30 @@ const Header = () => {
           <li>
             <Link to="/">Home</Link>
           </li>
-          {userContext?.user ? (
-            <li onClick={handleSignOut}>Logout</li>
+          <li>
+            <Link to="/order">Order</Link>
+          </li>
+          {userContext?.user && userContext.user.uid ? (
+            <>
+              <li className="cursor-pointer" onClick={handleSignOut}>
+                Logout
+              </li>
+              {userContext.user?.displayName !== null && (
+                <li className="cursor-pointer">
+                  {userContext.user.displayName}
+                </li>
+              )}
+            </>
           ) : (
             <>
               <li>
                 <Link to="/register">Register</Link>
               </li>
               <li>
-                <Link to="/login" state={{ prev: location.pathname }}>
-                  Login
-                </Link>
+                <Link to="/login">Login</Link>
               </li>
             </>
           )}
-
-          {userContext?.user && <li>{userContext.user.displayName}</li>}
-          <li>
-            <Link to="/order">Order</Link>
-          </li>
         </ul>
       </nav>
     </header>

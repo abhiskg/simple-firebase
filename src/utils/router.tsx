@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "../layout/Root";
 import PrivateRoute from "../routes/PrivateRoute";
+import RestrictedRoute from "../routes/RestrictedRoute";
 import Home from "../screens/Home";
 import Login from "../screens/Login";
 import Order from "../screens/Order";
@@ -17,15 +18,27 @@ const router = createBrowserRouter([
       },
       {
         path: "register",
-        element: <Register />,
+        element: (
+          <RestrictedRoute>
+            <Register />
+          </RestrictedRoute>
+        ),
       },
       {
         path: "login",
-        element: <Login />,
+        element: (
+          <RestrictedRoute>
+            <Login />
+          </RestrictedRoute>
+        ),
       },
       {
         path: "order",
-        element: <PrivateRoute><Order/></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <Order />
+          </PrivateRoute>
+        ),
       },
     ],
   },

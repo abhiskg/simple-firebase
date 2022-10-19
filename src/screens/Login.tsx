@@ -1,4 +1,3 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState, useRef, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";

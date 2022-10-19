@@ -3,26 +3,24 @@ import { Navigate } from "react-router-dom";
 import PingLoader from "../components/loader/PingLoader";
 import { UserContext } from "../context/UserContext";
 
-interface PrivateRouteProps {
+interface RestrictedRouteProps {
   children: React.ReactNode;
 }
 
-const PrivateRoute = ({ children }: PrivateRouteProps) => {
+const RestrictedRoute = ({ children }: RestrictedRouteProps) => {
   const userContext = useContext(UserContext);
 
   if (userContext?.loading) {
-    return (
-      <div className="mt-20 flex justify-center">
-        <PingLoader />
-      </div>
-    );
+    <div className="mt-20 flex justify-center">
+      <PingLoader />
+    </div>;
   }
 
-  if (userContext?.user && userContext.user.uid) {
+  if (!userContext?.user) {
     return <>{children}</>;
   }
 
-  return <Navigate to="/login"></Navigate>;
+  return <Navigate to="/"></Navigate>;
 };
 
-export default PrivateRoute;
+export default RestrictedRoute;
