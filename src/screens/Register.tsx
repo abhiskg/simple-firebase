@@ -1,4 +1,4 @@
-import { sendEmailVerification } from "firebase/auth";
+import { sendEmailVerification, User } from "firebase/auth";
 import { useState, useRef, useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
@@ -64,16 +64,12 @@ const Register = () => {
       setError("Fill all the fields");
       return;
     }
-    console.log(name, email, password);
 
     userContext
       ?.signUp(email, password)
       .then(({ user }) => {
         if (user) {
-          userContext
-            .updateUser(name, user)
-            .then(() => console.log("Update successfully"))
-            .catch((error) => console.log(error));
+          handleUpdateUser(name, user);
           sendEmailVerification(user);
         }
       })
@@ -84,6 +80,13 @@ const Register = () => {
     setName("");
     setEmail("");
     setPassword("");
+  };
+
+  const handleUpdateUser = (name: string, user: User) => {
+    userContext
+      ?.updateUser(name, user)
+      .then(() => console.log("Update successfully"))
+      .catch((error) => console.log(error));
   };
 
   const handleGoogleLogin = () => {

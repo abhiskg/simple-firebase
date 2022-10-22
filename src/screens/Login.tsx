@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +11,10 @@ const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null!);
 
   const userContext = useContext(UserContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     emailRef.current.focus();
@@ -48,11 +53,18 @@ const Login = () => {
     userContext
       ?.signIn(email, password)
       .then(({ user }) => {
-        console.log(user);
+        if (user.emailVerified) {
+          navigate(from, { replace: true });
+        } else {
+          toast.error("Please Verify your Email");
+        }
       })
       .catch((error: any) => {
         console.log(error);
         setError(error.message);
+      })
+      .finally(() => {
+        userContext.setLoading(false);
       });
 
     // setEmail("");

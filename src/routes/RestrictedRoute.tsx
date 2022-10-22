@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import PingLoader from "../components/loader/PingLoader";
 import { UserContext } from "../context/UserContext";
 
@@ -9,6 +9,7 @@ interface RestrictedRouteProps {
 
 const RestrictedRoute = ({ children }: RestrictedRouteProps) => {
   const userContext = useContext(UserContext);
+  const location = useLocation();
 
   if (userContext?.loading) {
     <div className="mt-20 flex justify-center">

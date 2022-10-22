@@ -12,10 +12,6 @@ import {
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firebase";
 
-interface UserContextProviderProps {
-  children: React.ReactNode;
-}
-
 interface UserContextProps {
   user: User | null;
   loading: boolean;
@@ -24,11 +20,12 @@ interface UserContextProps {
   signUp: (email: string, password: string) => Promise<UserCredential>;
   updateUser: (name: string, user: User) => Promise<void>;
   signInWithGoogle: () => Promise<UserCredential>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const UserContext = createContext<null | UserContextProps>(null);
 
-const UserContextProvider = ({ children }: UserContextProviderProps) => {
+const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,9 +33,11 @@ const UserContextProvider = ({ children }: UserContextProviderProps) => {
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log(currentUser);
-      console.log("inside");
-      setUser(currentUser);
+      if (currentUser === null || currentUser?.emailVerified) {
+        console.log(currentUser);
+        console.log("inside");
+        setUser(currentUser);
+      }
       setLoading(false);
     });
 
@@ -48,24 +47,29 @@ const UserContextProvider = ({ children }: UserContextProviderProps) => {
   }, []);
 
   const signUp = (email: string, password: string) => {
+    setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const updateUser = (name: string, user: User) => {
+    setLoading(true);
     return updateProfile(user, {
       displayName: name,
     });
   };
 
   const signIn = (email: string, password: string) => {
+    setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   const signInWithGoogle = () => {
+    setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
   const logOut = () => {
+    setLoading(true);
     return signOut(auth);
   };
 
@@ -74,6 +78,7 @@ const UserContextProvider = ({ children }: UserContextProviderProps) => {
       value={{
         user,
         loading,
+        setLoading,
         signIn,
         logOut,
         signUp,

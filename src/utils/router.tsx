@@ -18,19 +18,11 @@ const router = createBrowserRouter([
       },
       {
         path: "register",
-        element: (
-          <RestrictedRoute>
-            <Register />
-          </RestrictedRoute>
-        ),
+        element: <Register />,
       },
       {
         path: "login",
-        element: (
-          <RestrictedRoute>
-            <Login />
-          </RestrictedRoute>
-        ),
+        element: <Login />,
       },
       {
         path: "order",
