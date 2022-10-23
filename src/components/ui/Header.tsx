@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import DarkModeToggler from "./DarkModeToggler";
 
 const Header = () => {
   const userContext = useContext(UserContext);
@@ -41,6 +42,9 @@ const Header = () => {
               </li>
             </>
           )}
+          <li>
+            <DarkModeToggler />
+          </li>
         </ul>
       </nav>
     </header>

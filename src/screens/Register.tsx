@@ -1,6 +1,7 @@
 import { sendEmailVerification, User } from "firebase/auth";
 import { useState, useRef, useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { toast } from "react-hot-toast";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -71,6 +72,7 @@ const Register = () => {
         if (user) {
           handleUpdateUser(name, user);
           sendEmailVerification(user);
+          toast.success("Please check your email and verify");
         }
       })
       .catch((error: any) => {
